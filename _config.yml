@@ -1,15 +1,15 @@
 # Site settings
-title: 读立写生
+title: 卢兆灯
 header-img: "img/green.jpg"
 tagline: "cn"  
-description: "陈素封|读而立·写而生"  
-baseurl: ""
+description: "卢兆灯|我在这里瞎扯"  
+baseurl: "http://www.jordonlu.com"
 url: "http://www.jordonlu.com"  
 
 # About/contact
 owner: 
-  name: " CnFeat"
-  email: CnFeat@gmail.com
+  name: " jordonlu"
+  email: donlumillion@gmail.com
   bio: "写就是写的报酬"
 
 # Data
