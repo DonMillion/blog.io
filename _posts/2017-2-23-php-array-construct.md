@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 从头再来
+title: php数组的内部结构简介
 date: 2016-11-1
 categories: blog
 tags: [php原理]
