@@ -3,16 +3,16 @@ layout: post
 title: php的变量
 date: 2017-2-23
 categories: blog
-tags: [php原理]
+tags: [php原理, php]
 description: 大概了解一下php变量结构。
 ---
+
+#### php变量的机构 ####
 
 php是一种弱类型语言，一个变量的类型可以随时改变，因为php内部自动进行了转化。
 
 php5中的变量结构大致如下，内存占据24个字节：
 ```
-typedef struct _zval_struct zval;
-...
 struct _zval_struct {
     /* 变量信息 */
     union {
@@ -39,22 +39,24 @@ struct _zval_struct {
 ```
 struct _zval_struct {
 
+	/* php7变量具体值，比php5类型多了很多，但只会占用一个内存。如果是不需要引用的类型，直接就是值，否则是指针 */
 	union {
-		long   lval;
-		double dval;
+		long   lval;  /* 整形 */
+		double dval;  /* 浮点型 */
 		zend_refcount *counted;
-		zend_string *str;
-		zend_array *arr;
-		zend_object *obj;
-		zend_resource *res;
-		zend_reference *ref;
-		zend_ast_ref *ast;
+		zend_string *str; /* 字符串类型 */
+		zend_array *arr;  /* 数组类型 */
+		zend_object *obj; /* 对象类型 */
+		zend_resource *res; /* 资源来兴 */
+		zend_reference *ref; /* 引用 */
+		zend_ast_ref *ast; /* 这个目前我还不懂 */
 		zval *zv;
 		void *ptr;
 		zend_class_entry *ce;
-		zend_function *func;
+		zend_function *func; /* 这个应该是匿名函数用的，指向一个函数的地址 */
 	} value;
 
+	/* 这个应该是变量的类型信息 */
 	union {
 		struct {
 			ZEND_ENDIAN_LOHI_4(
@@ -66,6 +68,7 @@ struct _zval_struct {
 		zend_unit type_info;
 	} u1;
 
+	/* 这个是一个标志位 */
 	union {
 		zend_unit var_flags;
 		zend_unit next;
@@ -76,10 +79,11 @@ struct _zval_struct {
 }
 ```
 由原来的4个成员变量变成3个联合体，由于联合体只会用其中一个的内存，所以总的内存消耗是下降了。
-可以看出，如果变量是不需要引用类型（NULL、Boolean、Long、Double），结构体内的value就是具体的值，如果是需要引用类型，结构体内的value就是一个指针，直接指向真实的存储地址。这样的方式比原来要直接明了。
+可以看出，如果变量是不需要引用类型（NULL、Boolean、Long、Double），结构体内的value就是具体的值，如果是需要引用类型(String、Array、Object、Resource、Reference)，结构体内的value就是一个指针，直接指向真实的存储地址。这样的方式比原来要直接明了。
 
 
 
+#### 其他的一些小点 ####
 
 
 
